@@ -90,33 +90,6 @@ PostgreSQL 17
 
 Le frontend React fonctionne **hors Docker** pendant le développement. Docker exécute Nginx, PHP, PostgreSQL et pgAdmin. Le proxy de `frontend/vite.config.js` redirige les requêtes `/api` vers Nginx ; les composants peuvent donc appeler `fetch('/api/healthcheck')` sans URL absolue.
 
-### Structure du dépôt
-
-```text
-lovelace-ceramique/
-├── backend/
-│   ├── config/
-│   │   └── db.php
-│   ├── public/
-│   │   └── index.php
-│   └── src/
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   ├── package.json
-│   ├── package-lock.json
-│   └── vite.config.js
-├── docker/
-│   ├── nginx/
-│   ├── php/
-│   └── postgres/
-├── .env.example
-├── .gitignore
-├── Dockerfile
-├── docker-compose.yml
-└── README.md
-```
-
 ## 5. Installation et démarrage
 
 ### Prérequis
@@ -310,27 +283,4 @@ Exemples : « Afficher le catalogue des pièces » → `feature/catalogue-pieces
 
 ## 9. ADR — Décisions d'architecture
 
-### ADR 1 — Choix de la base de données
-
-**Date :** 2026-10-16 _(date reformattée à confirmer par l'équipe)_
-**Statut :** Accepté
-
-#### Contexte
-
-Choisir une base de données relationnelle pour les utilisateurs, les organisations, les commandes et les pièces de l'application.
-
-#### Options considérées
-
-1. **PostgreSQL** — robuste, open source, compatible avec des requêtes SQL avancées.
-2. **MySQL** — répandu, documentation importante.
-3. **SQLite** — simple à mettre en place, sans serveur dédié.
-
-#### Décision
-
-L'équipe a choisi **PostgreSQL**, qu'elle connaît déjà, et qui offre des possibilités de requêtes avancées pour la suite du projet. MySQL n'a pas été retenu, notamment en raison d'une moindre familiarité de l'équipe avec cet outil. SQLite n'a pas été retenu, l'équipe privilégiant un serveur relationnel adapté à son usage multi-utilisateur envisagé.
-
-#### Conséquences
-
-- Possibilité de construire des requêtes SQL avancées.
-- Nécessité de disposer d'une instance PostgreSQL pour le développement.
-- Installation et démarrage de la base documentés via `docker-compose.yml` et ce README.
+Les décisions d'architecture du projet sont documentées dans le fichier [ADR.md](ADR.md).
