@@ -26,7 +26,7 @@ services:
     restart: unless-stopped
     working_dir: /var/www/html
     volumes:
-      - .:/var/www/html
+      - ./backend:/var/www/html
     environment:
       APP_ENV: ${APP_ENV}
       DB_HOST: postgres
@@ -47,7 +47,7 @@ services:
     ports:
       - "${APP_PORT}:80"
     volumes:
-      - .:/var/www/html:ro
+      - ./backend:/var/www/html:ro
     depends_on:
       - php
 

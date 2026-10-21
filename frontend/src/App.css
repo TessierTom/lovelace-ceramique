@@ -1,0 +1,60 @@
+.app {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+header {
+  margin-bottom: 3rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #854d32;
+}
+
+header p {
+  color: #666;
+}
+
+section {
+  padding: 2rem;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+}
+
+button {
+  margin-top: 1rem;
+  padding: 0.8rem 1.5rem;
+  background-color: #854d32;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #683a26;
+}
+
+.connection-message {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.connection-message.success {
+  background-color: #e6f4ea;
+  color: #1e7e34;
+}
+
+.connection-message.error {
+  background-color: #fdecea;
+  color: #b42318;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
