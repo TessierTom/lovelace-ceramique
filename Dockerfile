@@ -1,5 +1,6 @@
 FROM php:8.5-fpm-bookworm
 
+# Installation des dépendances système et PostgreSQL
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         libpq-dev \
@@ -9,12 +10,14 @@ RUN apt-get update \
     && docker-php-ext-install -j$(nproc) pdo pdo_pgsql \
     && rm -rf /var/lib/apt/lists/*
 
+# Installation de Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# Répertoire de travail du backend
 WORKDIR /var/www/html
 
-# Fichiers applicatifs dans l'image (secours si le bind mount Windows est vide)
-COPY index.php /var/www/html/index.php
-COPY config/ /var/www/html/config/
+# Copie du backend dans l'image
+COPY backend/ /var/www/html/
 
+# Démarrage de PHP-FPM
 CMD ["php-fpm"]

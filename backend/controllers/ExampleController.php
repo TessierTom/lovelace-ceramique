@@ -15,7 +15,7 @@ final class ExampleController
         echo '<p>Version PHP : ' . PHP_VERSION . '</p>';
 
         /** @var PDO $pdo */
-        $pdo = require dirname(__DIR__, 2) . '/config/db.php';
+        $pdo = require __DIR__ . '/../config/db.php';
         $pdo->query('SELECT 1');
 
         $exemple = new Exemple('Bonjour, monde !');
