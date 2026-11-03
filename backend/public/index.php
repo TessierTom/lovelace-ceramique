@@ -37,7 +37,18 @@ switch ($path) {
     
     case '/api/utilisateur': 
         $controller = new UtilisateurController();
-        $controller->index();
+        switch ($method) {
+            case 'GET':
+                $controller->index();
+                break;
+            default:
+                http_response_code(405);
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'Méthode non autorisée'
+                ]);
+                break;
+        }
         break;
 
     default:
