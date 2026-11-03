@@ -6,13 +6,14 @@ final class HealthcheckModel
 {
     public function checkDatabase(): int
     {
-        // Obtener la conexión PostgreSQL
+        // conexion à la base de données en utilisant PDO
         $pdo = require __DIR__ . '/../config/db.php';
 
-        // Ejecutar una consulta para comprobar la conexión
+        // Exécuter une requête pour vérifier la connexion
+
         $result = $pdo->query('SELECT 1')->fetchColumn();
 
-        // Devolver el resultado como entero
+        // Retourner le résultat comme entier
         return (int) $result;
     }
 }
