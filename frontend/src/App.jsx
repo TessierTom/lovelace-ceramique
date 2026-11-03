@@ -5,6 +5,7 @@ function App() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
+  const [utilisateurs, setUtilisateurs] = useState([]);
 
   async function verifierConnexion() {
     setLoading(true);
@@ -12,7 +13,12 @@ function App() {
     setStatus("");
 
     try {
-      const response = await fetch("/api/healthcheck");
+      const response = await fetch("/api/healthcheck", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
 
       if (!response.ok) {
         throw new Error("Erreur de connexion au serveur");
@@ -23,6 +29,40 @@ function App() {
       if (data.status === "ok" && data.database === "connected") {
         setMessage(data.message);
         setStatus("success");
+      } else {
+        throw new Error("La base de données est indisponible");
+      }
+    } catch (error) {
+      setMessage(error.message);
+      setStatus("error");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function getUtilisateurs() {
+    setLoading(true);
+    setMessage("");
+    setStatus("");
+
+    try {
+      const response = await fetch("/api/utilisateur", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error("Erreur lors de la récupération des utilisateurs");
+      }
+
+      const data = await response.json();
+
+      if (data.status === "ok" && data.database === "connected") {
+        setMessage(data.message);
+        setStatus("success");
+        setUtilisateurs(data.result);
       } else {
         throw new Error("La base de données est indisponible");
       }
@@ -57,6 +97,29 @@ function App() {
           <p role="status" className={`connection-message ${status}`}>
             {message}
           </p>
+        )}
+
+        <button type="button" onClick={getUtilisateurs} disabled={loading}>
+          {loading ? "Récupération..." : "Récupérer les utilisateurs"}
+        </button>
+
+        {message && (
+          <p role="status" className={`connection-message ${status}`}>
+            {message}
+          </p>
+        )}
+
+        {utilisateurs.length > 0 && (
+          <div>
+            <h3>Liste des utilisateurs :</h3>
+            <ul>
+              {utilisateurs.map((utilisateur) => (
+                <li key={utilisateur.id}>
+                  {utilisateur.nom} - {utilisateur.email}
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
       </section>
     </main>
