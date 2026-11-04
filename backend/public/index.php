@@ -5,6 +5,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../controllers/HomeController.php';
 require_once __DIR__ . '/../controllers/TestController.php';
 require_once __DIR__ . '/../controllers/ExampleController.php';
+require_once __DIR__ . '/../controllers/UtilisateurController.php';
 
 // Récupérer la route demandée
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -26,8 +27,14 @@ switch ($path) {
         $controller->index();
         break;
 
+    // CRUD utilisateur (créer pour l'instant : admin + organisation)
+    case '/api/utilisateurs':
+        $controller = new UtilisateurController();
+        $controller->creer();
+        break;
+
         // Vérifier la route
-    case '/api/healthcheck': 
+    case '/api/healthcheck':
         // Définir le format de réponse
         header('Content-Type: application/json; charset=utf-8');
 

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import InscriptionForm from "./InscriptionForm.jsx";
 import "./App.css";
 
 function App() {
@@ -59,6 +60,8 @@ function App() {
           </p>
         )}
       </section>
+
+      <InscriptionForm />
     </main>
   );
 }

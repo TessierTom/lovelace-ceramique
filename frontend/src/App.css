@@ -21,6 +21,32 @@ section {
   padding: 2rem;
   border: 1px solid #ddd;
   border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.inscription form {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.inscription label {
+  display: grid;
+  gap: 0.4rem;
+  font-weight: 500;
+}
+
+.inscription input {
+  padding: 0.7rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font: inherit;
+}
+
+.erreurs-liste {
+  margin: 1rem 0 0;
+  padding-left: 1.2rem;
+  color: #b42318;
 }
 
 button {
