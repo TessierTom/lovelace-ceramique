@@ -1,0 +1,5 @@
+.register-form label {
+  display: flex;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}

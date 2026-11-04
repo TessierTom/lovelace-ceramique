@@ -10,7 +10,23 @@ require_once __DIR__ . '/../views/UtilisateurView.php';
 final class UtilisateurController
 {
     // Affiche un message pour vérifier que la route /api/utilisateur fonctionne.
-    public function index(): void
+    public function get(): void
+    {
+        $utilisateurView = new UtilisateurView();
+        try {
+            $utilisateurModel = new UtilisateurModel();
+            $result = $utilisateurModel->getUtilisateurs();
+
+            $utilisateurView->success($result);
+        } catch (Throwable $e) {
+            $message = $e->getMessage();
+            error_log($message);
+            $utilisateurView->error($message);
+        }
+    }
+
+    // Affiche un message pour vérifier que la route /api/utilisateur fonctionne.
+    public function post(): void
     {
         $utilisateurView = new UtilisateurView();
         try {
