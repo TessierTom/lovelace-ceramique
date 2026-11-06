@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./App.css";
+  import Kanban from "./components/Kanban/Kanban";
 import InscriptionForm from "../components/InscriptionForm/InscriptionForm";
 
 function App() {
@@ -123,6 +124,7 @@ function App() {
           </div>
         )}
       </section>
+              <Kanban />
       <InscriptionForm/>
     </main>
   );
