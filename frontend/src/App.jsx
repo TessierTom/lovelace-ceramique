@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./App.css";
+  import Kanban from "./components/Kanban/Kanban";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -59,6 +60,7 @@ function App() {
           </p>
         )}
       </section>
+              <Kanban />
     </main>
   );
 }
