@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import RegisterForm from "../components/FormUtilisateur/RegisterForm";
+import InscriptionForm from "../components/InscriptionForm/InscriptionForm";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -123,7 +123,7 @@ function App() {
           </div>
         )}
       </section>
-      <RegisterForm/>
+      <InscriptionForm/>
     </main>
   );
 }

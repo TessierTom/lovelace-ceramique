@@ -37,30 +37,14 @@ switch ($path) {
         $controller->index();
         break;
 
-    case '/api/utilisateur':
+    case '/api/utilisateurs':
         $controller = new UtilisateurController();
         switch ($method) {
             case 'GET':
-                $controller->get();
+                // $controller->get();
                 break;
             case 'POST':
-                $controller->post();
-                break;
-            default:
-                http_response_code(405);
-                echo json_encode([
-                    'status' => 'error',
-                    'message' => 'Méthode non autorisée'
-                ]);
-                break;
-        }
-        break;
-
-    case '/api/register':
-        $controller = new RegisterController();
-        switch ($method) {
-            case 'POST':
-                $controller->register();
+                $controller->creer();
                 break;
             default:
                 http_response_code(405);
