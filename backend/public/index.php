@@ -8,7 +8,6 @@ require_once __DIR__ . '/../controllers/TestController.php';
 require_once __DIR__ . '/../controllers/ExampleController.php';
 require_once __DIR__ . '/../controllers/HealthcheckController.php';
 require_once __DIR__ . '/../controllers/UtilisateurController.php';
-require_once __DIR__ . '/../controllers/RegisterController.php';
 
 // Récupérer la route demandée
 $method = $_SERVER['REQUEST_METHOD'];
