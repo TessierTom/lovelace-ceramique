@@ -35,6 +35,22 @@ final class UtilisateurModel
         return (int) $stmt->fetchColumn();
     }
 
+    // Liste des utilisateurs. Jamais le mot de passe (mdp).
+    public function lister(): array
+    {
+        $stmt = $this->pdo->query(
+            'SELECT id, nom, role FROM utilisateur ORDER BY nom'
+        );
+        $utilisateurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($utilisateurs as &$utilisateur) {
+            $utilisateur['id'] = (int) $utilisateur['id'];
+        }
+        unset($utilisateur);
+
+        return $utilisateurs;
+    }
+
     public function identifiantExiste(string $identifiant): bool
     {
         $stmt = $this->pdo->prepare(

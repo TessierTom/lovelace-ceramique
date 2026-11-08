@@ -1,5 +1,50 @@
+# ═══════════════════════════════════════
+# Environnement (NE JAMAIS COMMITTER)
+# ═══════════════════════════════════════
+.env
+.env.local
+.env.*.local
+# .env.example est intentionally tracked
+
+# ═══════════════════════════════════════
+# Frontend — Node / Vite
+# ═══════════════════════════════════════
+node_modules/
+dist/
+dist-ssr/
+.vite/
+*.local
+
+# Lock : on garde package-lock.json (stabilité équipe)
+# → ne pas ignorer
+
+# ═══════════════════════════════════════
+# Backend — PHP / Composer
+# ═══════════════════════════════════════
+backend/vendor/
+*.phar
+.phpunit.result.cache
+
+# ═══════════════════════════════════════
+# Base de données locale
+# ═══════════════════════════════════════
+*.sqlite
+*.sqlite3
+*.db
+dump.sql
+pg_dump*.sql
+
+# ═══════════════════════════════════════
+# Docker — volumes locaux (hors compose)
+# ═══════════════════════════════════════
+docker/volumes/
+docker/data/
+docker/.env
+
+# ═══════════════════════════════════════
 # Logs
-logs
+# ═══════════════════════════════════════
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -7,18 +52,4 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+# ═══════════════════════════════════════

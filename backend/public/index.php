@@ -7,7 +7,19 @@ require_once __DIR__ . '/../controllers/HomeController.php';
 require_once __DIR__ . '/../controllers/TestController.php';
 require_once __DIR__ . '/../controllers/ExampleController.php';
 require_once __DIR__ . '/../controllers/CommandeController.php';
+require_once __DIR__ . '/../controllers/PieceController.php';
 require_once __DIR__ . '/../controllers/UtilisateurController.php';
+
+// Réponse JSON d'erreur pour les routes non autorisées / introuvables
+function repondreJsonErreur(int $code, string $message): void
+{
+    header('Content-Type: application/json; charset=utf-8');
+    http_response_code($code);
+    echo json_encode([
+        'status' => 'error',
+        'message' => $message,
+    ]);
+}
 
 // Récupérer la route demandée
 $method = $_SERVER['REQUEST_METHOD'];
@@ -34,45 +46,46 @@ switch ($path) {
         $controller = new UtilisateurController();
         switch ($method) {
             case 'GET':
-                // $controller->get();
+                $controller->get();
                 break;
             case 'POST':
                 $controller->creer();
                 break;
             default:
-                http_response_code(405);
-                echo json_encode([
-                    'status' => 'error',
-                    'message' => 'Méthode non autorisée'
-                ]);
+                repondreJsonErreur(405, 'Méthode non autorisée');
                 break;
         }
         break;
-    
-    case '/api/commande':
-    $controller = new CommandeController();
-    switch ($method) {
-        case 'GET':
-            $controller->get();
-            break;
-        case 'POST':
-            $controller->creer();
-            break;
-        default:
-            http_response_code(405);
-            echo json_encode(['status' => 'error', 'message' => 'Méthode non autorisée']);
-            break;
-    }
-    break;
 
+    case '/api/pieces':
+        $controller = new PieceController();
+        switch ($method) {
+            case 'GET':
+                $controller->get();
+                break;
+            default:
+                repondreJsonErreur(405, 'Méthode non autorisée');
+                break;
+        }
+        break;
+
+    case '/api/commande':
+        $controller = new CommandeController();
+        switch ($method) {
+            case 'GET':
+                $controller->get();
+                break;
+            case 'POST':
+                $controller->creer();
+                break;
+            default:
+                repondreJsonErreur(405, 'Méthode non autorisée');
+                break;
+        }
+        break;
 
     default:
-        http_response_code(404);
-
-        echo json_encode([
-            'status' => 'error',
-            'message' => 'Route introuvable'
-        ]);
+        repondreJsonErreur(404, 'Route introuvable');
         break;
 }
 

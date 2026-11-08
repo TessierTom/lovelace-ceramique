@@ -82,14 +82,14 @@ function App() {
     }
   }
 
-  // === AJOUT : GET /api/commande — liste les commandes ===
+  // === AJOUT : GET /api/commandes — liste les commandes ===
   async function getCommandes() {
     setLoading(true);
     setMessage("");
     setStatus("");
 
     try {
-      const response = await fetch("/api/commande", {
+      const response = await fetch("/api/commandes", {
         method: "GET",
         headers: {
           "Content-Type": "application/json"
@@ -118,7 +118,7 @@ function App() {
   }
   // === FIN AJOUT ===
 
-  // === AJOUT : POST /api/commande — crée une commande ===
+  // === AJOUT : POST /api/commandes — crée une commande ===
   async function creerCommande(e) {
     e.preventDefault();
     setLoading(true);
@@ -126,7 +126,7 @@ function App() {
     setStatus("");
 
     try {
-      const response = await fetch("/api/commande", {
+      const response = await fetch("/api/commandes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -167,3 +167,85 @@ function App() {
 
   return (
     <main className="app">
+      <h1>Lovelace Ceramique</h1>
+
+      {/* Message de statut */}
+      {message && (
+        <p className={`status ${status}`}>{message}</p>
+      )}
+
+      {/* Vérifier connexion */}
+      <button onClick={verifierConnexion} disabled={loading}>
+        {loading ? "Vérification..." : "Vérifier la connexion"}
+      </button>
+
+      {/* Utilisateurs */}
+      <button onClick={getUtilisateurs} disabled={loading}>
+        {loading ? "Chargement..." : "Charger les utilisateurs"}
+      </button>
+
+      {utilisateurs.length > 0 && (
+        <ul>
+          {utilisateurs.map((u) => (
+            <li key={u.id}>{u.nom || u.prenom} ({u.id})</li>
+          ))}
+        </ul>
+      )}
+
+      {/* === Commandes === */}
+      <section>
+        <h2>Commandes</h2>
+        <button onClick={getCommandes} disabled={loading}>
+          Charger les commandes
+        </button>
+        <button onClick={() => setShowForm(!showForm)} disabled={loading}>
+          {showForm ? "Masquer" : "Nouvelle commande"}
+        </button>
+
+        {showForm && (
+          <form onSubmit={creerCommande} className="form-commande">
+            <label>
+              Nom du client
+              <input
+                type="text"
+                value={nomClient}
+                onChange={(e) => setNomClient(e.target.value)}
+                required
+              />
+            </label>
+            <label>
+              Utilisateur
+              <select
+                value={utilisateurId}
+                onChange={(e) => setUtilisateurId(e.target.value)}
+                required
+              >
+                <option value="">-- Choisir --</option>
+                {utilisateurs.map((u) => (
+                  <option key={u.id} value={u.id}>
+                    {u.nom || u.prenom} (#{u.id})
+                  </option>
+                ))}
+              </select>
+            </label>
+            <button type="submit" disabled={loading}>
+              {loading ? "Création..." : "Créer la commande"}
+            </button>
+          </form>
+        )}
+
+        {commandes.length > 0 && (
+          <ul className="liste-commandes">
+            {commandes.map((c) => (
+              <li key={c.id}>
+                #{c.id} — {c.nom_client} — utilisateur #{c.utilisateur_id}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    </main>
+  );
+}
+
+export default App;

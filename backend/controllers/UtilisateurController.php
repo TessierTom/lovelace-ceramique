@@ -5,10 +5,34 @@ declare(strict_types=1);
 require_once __DIR__ . '/../models/OrganisationModel.php';
 require_once __DIR__ . '/../models/UtilisateurModel.php';
 
-// CRUD utilisateur — pour l'instant : créer (avec son organisation).
-// À venir : lister, modifier, supprimer.
+// CRUD utilisateur — pour l'instant : lister, créer (avec son organisation).
+// À venir : modifier, supprimer.
 final class UtilisateurController
 {
+    /**
+     * GET /api/utilisateurs
+     * Réponse : { status, utilisateurs: [ { id, nom, role }, ... ] }
+     */
+    public function get(): void
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        try {
+            /** @var PDO $pdo */
+            $pdo = require __DIR__ . '/../config/db.php';
+            $utilisateurs = (new UtilisateurModel($pdo))->lister();
+
+            http_response_code(200);
+            echo json_encode([
+                'status' => 'ok',
+                'utilisateurs' => $utilisateurs,
+            ]);
+        } catch (Throwable $e) {
+            error_log($e->getMessage());
+            $this->repondreErreur(500, 'Impossible de récupérer les utilisateurs');
+        }
+    }
+
     public function creer(): void
     {
         header('Content-Type: application/json; charset=utf-8');
