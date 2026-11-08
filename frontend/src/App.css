@@ -59,3 +59,41 @@ button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+.btn-commande {
+  background: #5c4033;
+  color: #fff;
+  border: 2px solid #5c4033;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+.btn-commande:hover {
+  background: #7a5c4a;
+}
+
+.form-commande {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: 320px;
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fafafa;
+}
+.form-commande label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+}
+.form-commande input,
+.form-commande select {
+  padding: 6px 8px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}

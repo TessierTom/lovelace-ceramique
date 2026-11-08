@@ -6,7 +6,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../controllers/HomeController.php';
 require_once __DIR__ . '/../controllers/TestController.php';
 require_once __DIR__ . '/../controllers/ExampleController.php';
-require_once __DIR__ . '/../controllers/HealthcheckController.php';
+require_once __DIR__ . '/../controllers/CommandeController.php';
 require_once __DIR__ . '/../controllers/UtilisateurController.php';
 
 // Récupérer la route demandée
@@ -30,12 +30,6 @@ switch ($path) {
         $controller->index();
         break;
 
-    // Vérifier la route
-    case '/api/healthcheck':
-        $controller = new HealthcheckController();
-        $controller->index();
-        break;
-
     case '/api/utilisateurs':
         $controller = new UtilisateurController();
         switch ($method) {
@@ -54,6 +48,23 @@ switch ($path) {
                 break;
         }
         break;
+    
+    case '/api/commande':
+    $controller = new CommandeController();
+    switch ($method) {
+        case 'GET':
+            $controller->get();
+            break;
+        case 'POST':
+            $controller->creer();
+            break;
+        default:
+            http_response_code(405);
+            echo json_encode(['status' => 'error', 'message' => 'Méthode non autorisée']);
+            break;
+    }
+    break;
+
 
     default:
         http_response_code(404);

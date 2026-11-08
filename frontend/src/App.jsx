@@ -8,6 +8,13 @@ function App() {
   const [status, setStatus] = useState("");
   const [utilisateurs, setUtilisateurs] = useState([]);
 
+  // === AJOUT : état commandes + formulaire ===
+  const [commandes, setCommandes] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [nomClient, setNomClient] = useState("");
+  const [utilisateurId, setUtilisateurId] = useState("");
+  // === FIN AJOUT ===
+
   async function verifierConnexion() {
     setLoading(true);
     setMessage("");
@@ -75,57 +82,88 @@ function App() {
     }
   }
 
+  // === AJOUT : GET /api/commande — liste les commandes ===
+  async function getCommandes() {
+    setLoading(true);
+    setMessage("");
+    setStatus("");
+
+    try {
+      const response = await fetch("/api/commande", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error("Erreur lors de la récupération des commandes");
+      }
+
+      const data = await response.json();
+
+      if (data.status === "ok" && data.database === "connected") {
+        setMessage(data.message);
+        setStatus("success");
+        setCommandes(data.result);
+      } else {
+        throw new Error("La base de données est indisponible");
+      }
+    } catch (error) {
+      setMessage(error.message);
+      setStatus("error");
+    } finally {
+      setLoading(false);
+    }
+  }
+  // === FIN AJOUT ===
+
+  // === AJOUT : POST /api/commande — crée une commande ===
+  async function creerCommande(e) {
+    e.preventDefault();
+    setLoading(true);
+    setMessage("");
+    setStatus("");
+
+    try {
+      const response = await fetch("/api/commande", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          nom_client: nomClient,
+          utilisateur_id: parseInt(utilisateurId, 10),
+        }),
+      });
+
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.message || "Erreur lors de la création de la commande");
+      }
+
+      const data = await response.json();
+
+      if (data.status === "ok" && data.database === "connected") {
+        setMessage(data.message);
+        setStatus("success");
+        // Réinitialise le formulaire
+        setNomClient("");
+        setUtilisateurId("");
+        setShowForm(false);
+        // Recharge la liste
+        await getCommandes();
+      } else {
+        throw new Error("La base de données est indisponible");
+      }
+    } catch (error) {
+      setMessage(error.message);
+      setStatus("error");
+    } finally {
+      setLoading(false);
+    }
+  }
+  // === FIN AJOUT ===
+
   return (
     <main className="app">
-      <header>
-        <h1>Lovelace Céramique</h1>
-        <p>Gestion de production pour les ateliers de céramique</p>
-      </header>
-
-      <section>
-        <h2>Bienvenue dans votre atelier</h2>
-
-        <p>
-          Suivez vos objets, vos étapes de fabrication et vos tâches de
-          production.
-        </p>
-
-        <button type="button" onClick={verifierConnexion} disabled={loading}>
-          {loading ? "Vérification..." : "Vérifier la connexion"}
-        </button>
-
-        {message && (
-          <p role="status" className={`connection-message ${status}`}>
-            {message}
-          </p>
-        )}
-
-        <button type="button" onClick={getUtilisateurs} disabled={loading}>
-          {loading ? "Récupération..." : "Récupérer les utilisateurs"}
-        </button>
-
-        {message && (
-          <p role="status" className={`connection-message ${status}`}>
-            {message}
-          </p>
-        )}
-
-        {utilisateurs.length > 0 && (
-          <div>
-            <h3>Liste des utilisateurs :</h3>
-            <ul>
-              {utilisateurs.map((utilisateur) => (
-                <li key={utilisateur.id}>
-                  {utilisateur.nom} - {utilisateur.email}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </section>
-      <InscriptionForm/>
-    </main>
-  );
-}
-
-export default App;
