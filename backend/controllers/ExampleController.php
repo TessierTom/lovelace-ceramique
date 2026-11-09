@@ -4,6 +4,8 @@
 
 declare(strict_types=1);
 
+namespace App\Controllers;
+
 final class ExampleController
 {
     // Affiche la page d'accueil (test PHP + connexion PostgreSQL).
@@ -27,18 +29,22 @@ final class ExampleController
     }
 }
 
-class Exemple {
+class Exemple
+{
     public string $message;
 
-    public function __construct(string $message){
+    public function __construct(string $message)
+    {
         $this->message = $message;
     }
 
-    public function afficher(): void {
+    public function afficher(): void
+    {
         echo '<p style="color: blue;">' . $this->message . '</p>';
     }
 
-    public function goodBye(): void {
+    public function goodBye(): void
+    {
         echo '<p style="color: red;">Au revoir, monde !</p>';
     }
 }

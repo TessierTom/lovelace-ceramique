@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+namespace App\Models;
+
+use PDO;
+
 // Accès à la table organisation (requêtes SQL uniquement).
 final class OrganisationModel
 {

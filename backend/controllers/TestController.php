@@ -4,6 +4,8 @@
 
 declare(strict_types=1);
 
+namespace App\Controllers;
+
 final class TestController
 {
     // Affiche un message pour vérifier que la route /test fonctionne.
