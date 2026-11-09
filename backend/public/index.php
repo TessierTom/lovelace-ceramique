@@ -1,14 +1,17 @@
 <?php
-
 declare(strict_types=1);
 
-// Chargement des contrôleurs
-require_once __DIR__ . '/../controllers/HomeController.php';
-require_once __DIR__ . '/../controllers/TestController.php';
-require_once __DIR__ . '/../controllers/ExampleController.php';
-require_once __DIR__ . '/../controllers/CommandeController.php';
-require_once __DIR__ . '/../controllers/PieceController.php';
-require_once __DIR__ . '/../controllers/UtilisateurController.php';
+// Chargement de l'autoloader Composer
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use App\Controllers\HomeController;
+use App\Controllers\TestController;
+use App\Controllers\ExampleController;
+use App\Controllers\UtilisateurController;
+use App\Controllers\HealthcheckController;
+use App\Controllers\PieceController;
+use App\Controllers\CommandeController;
+use App\Controllers\AuthController;
 
 // Réponse JSON d'erreur pour les routes non autorisées / introuvables
 function repondreJsonErreur(int $code, string $message): void
@@ -16,17 +19,18 @@ function repondreJsonErreur(int $code, string $message): void
     header('Content-Type: application/json; charset=utf-8');
     http_response_code($code);
     echo json_encode([
-        'status' => 'error',
+        'status'  => 'error',
         'message' => $message,
     ]);
 }
 
 // Récupérer la route demandée
 $method = $_SERVER['REQUEST_METHOD'];
-$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$path   = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 // Routes des contrôleurs
 switch ($path) {
+
     case '/':
         $controller = new HomeController();
         $controller->index();
@@ -55,6 +59,16 @@ switch ($path) {
                 repondreJsonErreur(405, 'Méthode non autorisée');
                 break;
         }
+        break;
+
+    case '/api/healthcheck':
+        $controller = new HealthcheckController();
+        $controller->index();
+        break;
+
+    case '/api/connexion':
+        $controller = new AuthController();
+        $controller->connexion();
         break;
 
     case '/api/pieces':

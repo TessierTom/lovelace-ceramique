@@ -2,8 +2,14 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../models/OrganisationModel.php';
-require_once __DIR__ . '/../models/UtilisateurModel.php';
+namespace App\Controllers;
+
+use App\Models\OrganisationModel;
+use App\Models\CommandeModel;
+use App\Models\UtilisateurModel;
+use App\Models\PieceModel;
+use App\Models\HealthcheckModel;
+
 
 // CRUD utilisateur — pour l'instant : lister, créer (avec son organisation).
 // À venir : modifier, supprimer.
@@ -19,8 +25,7 @@ final class UtilisateurController
 
         try {
             /** @var PDO $pdo */
-            $pdo = require __DIR__ . '/../config/db.php';
-            $utilisateurs = (new UtilisateurModel($pdo))->lister();
+            $utilisateurs = (new UtilisateurModel())->lister();
 
             http_response_code(200);
             echo json_encode([

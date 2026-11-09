@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../models/CommandeModel.php';
+namespace App\Controllers;
+
+
 
 // API commande : lister (GET) et créer (POST) une commande avec ses tickets.
 final class CommandeController

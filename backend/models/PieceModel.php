@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace App\Models;
+
 // Accès à la table piece (modèles de pièce : Tasse, Bol, Vase…).
 final class PieceModel
 {

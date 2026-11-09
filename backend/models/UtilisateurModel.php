@@ -1,73 +1,46 @@
 <?php
-
 declare(strict_types=1);
 
-// Accès à la table utilisateur (requêtes SQL uniquement).
+namespace App\Models;
+
 final class UtilisateurModel
 {
-    public function __construct(
-        private PDO $pdo,
-    ) {}
+    private \PDO $pdo;
 
-    // Crée un utilisateur et renvoie son id.
-    public function creer(
-        string $identifiant,
-        string $mdpHash,
-        string $email,
-        string $nom,
-        int $organisationId,
-        string $role,
-    ): int {
-        $stmt = $this->pdo->prepare(
-            'INSERT INTO utilisateur (identifiant, mdp, email, nom, organisation_id, role)
-             VALUES (:identifiant, :mdp, :email, :nom, :organisation_id, :role)
-             RETURNING id'
-        );
-        $stmt->execute([
-            'identifiant' => $identifiant,
-            'mdp' => $mdpHash,
-            'email' => $email,
-            'nom' => $nom,
-            'organisation_id' => $organisationId,
-            'role' => $role,
-        ]);
-
-        return (int) $stmt->fetchColumn();
+    public function __construct()
+    {
+        $this->pdo = require __DIR__ . '/../config/db.php';
     }
 
-    // Liste des utilisateurs. Jamais le mot de passe (mdp).
+    /**
+     * Renvoie l'utilisateur (avec hash) ou null si introuvable.
+     * Utilisé par AuthController pour la vérification du mot de passe.
+     */
+    public function trouverParIdentifiant(string $identifiant): ?array
+    {
+        $sql = 'SELECT id, identifiant, mot_de_passe, nom, prenom, role
+                FROM utilisateurs
+                WHERE identifiant = :identifiant
+                LIMIT 1';
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['identifiant' => $identifiant]);
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        return $row ?: null;
+    }
+
+    /**
+     * Renvoie la liste des utilisateurs (sans mot_de_passe).
+     * @return array<int, array<string, mixed>>
+     */
     public function lister(): array
     {
-        $stmt = $this->pdo->query(
-            'SELECT id, nom, role FROM utilisateur ORDER BY nom'
-        );
-        $utilisateurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $sql = 'SELECT id, identifiant, nom, prenom, role, cree_le
+                FROM utilisateurs
+                ORDER BY id';
 
-        foreach ($utilisateurs as &$utilisateur) {
-            $utilisateur['id'] = (int) $utilisateur['id'];
-        }
-        unset($utilisateur);
-
-        return $utilisateurs;
-    }
-
-    public function identifiantExiste(string $identifiant): bool
-    {
-        $stmt = $this->pdo->prepare(
-            'SELECT 1 FROM utilisateur WHERE identifiant = :identifiant LIMIT 1'
-        );
-        $stmt->execute(['identifiant' => $identifiant]);
-
-        return $stmt->fetchColumn() !== false;
-    }
-
-    public function emailExiste(string $email): bool
-    {
-        $stmt = $this->pdo->prepare(
-            'SELECT 1 FROM utilisateur WHERE email = :email LIMIT 1'
-        );
-        $stmt->execute(['email' => $email]);
-
-        return $stmt->fetchColumn() !== false;
+        $stmt = $this->pdo->query($sql);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

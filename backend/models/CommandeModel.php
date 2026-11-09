@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace App\Models;
+
 // Accès aux tables commande et commande_ticket (requêtes SQL uniquement).
 final class CommandeModel
 {

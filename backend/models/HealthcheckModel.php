@@ -4,9 +4,13 @@
 
 declare(strict_types=1);
 
+namespace App\Models;
+
+
+
 final class HealthcheckModel
 {
-    private PDO $pdo;
+    private \PDO $pdo;
     
     public function __construct()
     {

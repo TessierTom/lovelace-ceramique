@@ -4,6 +4,9 @@
 
 declare(strict_types=1);
 
+namespace App\Controllers;
+
+
 final class ExampleController
 {
     // Affiche la page d'accueil (test PHP + connexion PostgreSQL).

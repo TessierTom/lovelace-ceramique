@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../models/PieceModel.php';
+namespace App\Controllers;
+
 
 // API pièce : lister les modèles de pièce (pour le formulaire de commande).
 final class PieceController

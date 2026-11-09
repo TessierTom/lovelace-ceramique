@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace App\Models;
+
 // Accès à la table organisation (requêtes SQL uniquement).
 final class OrganisationModel
 {
