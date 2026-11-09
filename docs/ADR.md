@@ -70,7 +70,7 @@ Nous devons choisir une stack back
 ### Décision
 
 Nous avons choisi PHP car notre formateur a beaucoup d'expériences dessus et pouvait bien nous conseiller dessus. Il est aussi bien plus simple à mettre en production car la plupart des serveurs sait interprêter PHP.
-Le C# et le Java sont nettement plus compliquer à installer et peu voire pas d'expériences sur ces langages.
+Le C# et le Java sont nettement plus compliqué à installer et l'équipe a, en moyenne, peu voire pas d'expériences sur ces langages.
 Node Express est moins commun en architecture back.
 
 ### Conséquences
