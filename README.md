@@ -2,7 +2,7 @@
 
 Application web SaaS destinée aux artisans potiers et céramistes — projet collectif Ada Tech School (CDA).
 
-> **Nom de l'application à confirmer :** PotterPilot, ClayFlow, PotterFlow, PlanPot ou ZenPot. « Lovelace Céramique » désigne actuellement le projet.
+**Nom de l'application :** PotterPilot. « Lovelace Céramique » désigne actuellement le projet.
 
 ## 1. Contexte et objectifs
 
@@ -23,10 +23,10 @@ Chaque matin, Claire, céramiste et fondatrice d'un atelier, perd du temps à re
 
 ## 2. Profils et droits envisagés
 
-| Profil | Responsabilités prévues |
-| **Admin** | Créer, supprimer et configurer les étapes, définir les échéances, déplacer les objets entre étapes, ajouter des membres et attribuer des rôles ; dispose également des droits de contribution. |
-| **Manager** | Créer des commandes, les attribuer, valider les tâches et suivre les objets dans les étapes de production. |
-| **Contributeur** | Créer et attribuer des tâches, les valider et faire progresser les objets dans le workflow, selon les droits retenus. |
+| Profil           | Responsabilités prévues                                                                                                                                                                        |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Admin**        | Créer, supprimer et configurer les étapes, définir les échéances, déplacer les objets entre étapes, ajouter des membres et attribuer des rôles ; dispose également des droits de contribution. |
+| **Contributeur** | Créer et attribuer des tâches, les valider et faire progresser les objets dans le workflow, selon les droits retenus.                                                                          |
 
 > La répartition exacte des permissions devra être précisée avant l'implémentation de l'authentification et de l'autorisation.
 
@@ -146,19 +146,31 @@ curl -i http://localhost:8080/api/healthcheck
 
 Une réponse `HTTP 200 OK` avec `"status":"ok"` confirme que PHP a pu exécuter `SELECT 1` dans PostgreSQL. **La racine `http://localhost:8080/` n'est plus la page HTML de test initiale.**
 
-### Étape 5 — Installer et démarrer React
+### Étape 5 — Générer l'autoloader php
 
-Dans un **deuxième terminal**, depuis la racine du dépôt :
+Dans ce projet, Composer est déjà disponible **dans le conteneur PHP** (pas besoin de l’installer sur ton Mac).
+
+Depuis la **racine du projet** (là où se trouve `docker-compose.yml`) :
 
 ```bash
-cd frontend
-npm ci
-npm run dev
+docker compose exec php composer --version
 ```
 
-Ouvrir http://localhost:5173, puis cliquer sur **« Vérifier la connexion »**. Le message attendu est **« Connexion PostgreSQL OK »**.
+Tu dois voir un numéro de version (par exemple `Composer version 2.x...`).
 
-`npm ci` utilise le fichier `package-lock.json` ; le répertoire `node_modules/` est ignoré par Git.
+> Si la commande échoue : vérifie que les conteneurs tournent (`docker compose ps`).
+
+S'il n'est pas installé :
+
+```bash
+docker compose exec php composer install
+```
+
+Si tout est installé, régénérer l'autoloader (à faire à chaque modification ou ajout de classe dans les namespaces) :
+
+```bash
+docker compose exec php composer dump-autoload
+```
 
 ### Étape 6 — Accéder à pgAdmin
 
@@ -182,20 +194,8 @@ Dans **Register → Server**, renseigner :
 
 **Important :** dans pgAdmin exécuté sous Docker, l'hôte est **`postgres`**, et non `localhost`. Les identifiants de PostgreSQL doivent correspondre aux valeurs effectives de `.env` et de la base initialisée.
 
-### Étape 7 — Vérifications frontend
-
-Depuis `frontend/` :
-
-```bash
-npm run lint
-npm run build
-```
-
-Le build crée `frontend/dist/` (ignoré par Git). Il **ne déploie pas** l'application : le serveur Nginx actuel expose l'API, tandis que Vite sert l'interface en développement.
-
 ### Arrêter et redémarrer
 
-- **Frontend :** `Ctrl + C` dans le terminal Vite.
 - **Services Docker :** depuis la racine du dépôt, `docker compose down`.
 - **Redémarrage :** `docker compose up -d`, puis `npm run dev` depuis `frontend/`.
 
@@ -274,12 +274,12 @@ Exemples : « Afficher le catalogue des pièces » → `feature/catalogue-pieces
 
 ### Équipe
 
-- Goundoba D — rôle à préciser.
-- Esteban — rôle à préciser.
-- Maxence Fournier — rôle à préciser.
-- Victor — rôle à préciser.
-- Emmanuel — rôle à préciser.
-- Tom — rôle à préciser.
+- Goundoba D — Scrum master.
+- Esteban — Reviewer.
+- Maxence Fournier — Développeur.
+- Victor — Développeur.
+- Emmanuel — Développeur.
+- Tom — Chef de projet.
 
 ## 9. ADR — Décisions d'architecture
 

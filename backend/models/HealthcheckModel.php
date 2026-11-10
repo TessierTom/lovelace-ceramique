@@ -4,10 +4,14 @@
 
 declare(strict_types=1);
 
+namespace App\Models;
+
+use PDO;
+
 final class HealthcheckModel
 {
     private PDO $pdo;
-    
+
     public function __construct()
     {
         // Connexion à PostgreSQL

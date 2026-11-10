@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+namespace App\Models;
+
+use PDO;
+
 // Accès à la table utilisateur (requêtes SQL uniquement).
 final class UtilisateurModel
 {
@@ -53,5 +57,24 @@ final class UtilisateurModel
         $stmt->execute(['email' => $email]);
 
         return $stmt->fetchColumn() !== false;
+    }
+
+    public function trouverParIdentifiant(string $identifiant): ?array
+    {
+        $stmt = $this->pdo->prepare(
+            'SELECT id, identifiant, mdp, email, nom, role, organisation_id
+            FROM utilisateur
+            WHERE identifiant = :identifiant
+            LIMIT 1'
+        );
+        $stmt->execute(['identifiant' => $identifiant]);
+
+        $ligne = $stmt->fetch();
+
+        if ($ligne === false) {
+            return null;
+        }
+
+        return $ligne;
     }
 }

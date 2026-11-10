@@ -2,8 +2,14 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../models/OrganisationModel.php';
-require_once __DIR__ . '/../models/UtilisateurModel.php';
+namespace App\Controllers;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use App\Models\OrganisationModel;
+use App\Models\UtilisateurModel;
+use PDO;
+use Throwable;
 
 // CRUD utilisateur — pour l'instant : créer (avec son organisation).
 // À venir : lister, modifier, supprimer.

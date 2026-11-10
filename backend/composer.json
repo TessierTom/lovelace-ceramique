@@ -1,0 +1,13 @@
+{
+    "name": "lovelace/backend",
+    "autoload": {
+    "psr-4": {
+      "App\\Controllers\\": "controllers/",
+      "App\\Models\\": "models/",
+      "App\\Views\\": "views/"
+        }
+    },
+    "require": {
+        "firebase/php-jwt": "^7.2"
+    }
+}
