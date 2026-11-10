@@ -8,6 +8,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Models\OrganisationModel;
 use App\Models\UtilisateurModel;
+use App\Services\UtilisateurValidator;
 use PDO;
 use Throwable;
 
@@ -37,7 +38,8 @@ final class UtilisateurController
         $email = trim((string) ($payload['email'] ?? ''));
         $nom = trim((string) ($payload['nom'] ?? ''));
 
-        $erreurs = $this->valider($organisationNom, $identifiant, $mdp, $email, $nom);
+        $validator = new UtilisateurValidator();
+        $erreurs = $validator->valider($organisationNom, $identifiant, $mdp, $email, $nom);
 
         if ($erreurs !== []) {
             $this->repondreErreur(422, 'Données invalides', $erreurs);
@@ -98,39 +100,6 @@ final class UtilisateurController
             error_log($e->getMessage());
             $this->repondreErreur(500, 'Impossible de créer l\'utilisateur');
         }
-    }
-
-    /** @return list<string> */
-    private function valider(
-        string $organisationNom,
-        string $identifiant,
-        string $mdp,
-        string $email,
-        string $nom,
-    ): array {
-        $erreurs = [];
-
-        if ($organisationNom === '' || mb_strlen($organisationNom) > 50) {
-            $erreurs[] = 'Le nom de l\'organisation est obligatoire (max. 50 caractères)';
-        }
-
-        if ($identifiant === '' || mb_strlen($identifiant) > 25) {
-            $erreurs[] = 'L\'identifiant est obligatoire (max. 25 caractères)';
-        }
-
-        if ($mdp === '' || mb_strlen($mdp) < 8) {
-            $erreurs[] = 'Le mot de passe doit contenir au moins 8 caractères';
-        }
-
-        if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || mb_strlen($email) > 120) {
-            $erreurs[] = 'L\'email est invalide';
-        }
-
-        if ($nom === '' || mb_strlen($nom) > 50) {
-            $erreurs[] = 'Le nom est obligatoire (max. 50 caractères)';
-        }
-
-        return $erreurs;
     }
 
     /** @param list<string>|null $erreurs */
