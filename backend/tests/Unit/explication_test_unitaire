@@ -1,0 +1,27 @@
+Un test unitaire vérifie automatiquement une petite règle, toute seule et sans lancer le site, pour prévenir tout de suite s’il y a un défaut.
+
+Exemple : dans UtilisateurValidator, la règle « l’email doit être valide » :
+
+php
+if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || mb_strlen($email) > 120) {
+    $erreurs[] = 'L\'email est invalide';
+}
+
+Dans UtilisateurValidatorTest, le test envoie un faux email et vérifie que l’erreur est bien renvoyée :
+
+php
+public function test_email_invalide_est_refuse(): void
+{
+    $erreurs = $this->validator->valider(
+        'Atelier Claire',
+        'claire',
+        'motdepasse1',
+        'pas-un-email',
+        'Claire Martin',
+    );
+
+    $this->assertNotSame([], $erreurs);
+    $this->assertContains('L\'email est invalide', $erreurs);
+}
+
+Une seule commande (vendor/bin/phpunit) lance tous les tests et indique lequel échoue, donc où se trouve le défaut.
